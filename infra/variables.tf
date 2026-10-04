@@ -14,6 +14,12 @@ variable "create_oidc_provider" {
   default     = true
 }
 
+variable "github_oidc_subject" {
+  description = "Exact GitHub OIDC subject. Set this for repositories using immutable owner and repository IDs."
+  type        = string
+  default     = null
+}
+
 variable "instance_type" {
   type    = string
   default = "t3.micro"

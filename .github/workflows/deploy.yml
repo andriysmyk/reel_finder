@@ -78,8 +78,8 @@ jobs:
               "set -euo pipefail",
               "aws ecr get-login-password --region \($region) | docker login --username AWS --password-stdin \($reg)",
               "docker pull \($img)",
-              "docker rm -f film-catalog || true",
-              "docker run -d --name film-catalog --restart unless-stopped -p 80:3000 -e APP_VERSION=\($ver) --log-driver=awslogs --log-opt awslogs-region=\($region) --log-opt awslogs-group=\($lg) \($img)",
+              "docker rm -f reel_finder || true",
+              "docker run -d --name reel_finder --restart unless-stopped -p 80:3000 -e APP_VERSION=\($ver) --log-driver=awslogs --log-opt awslogs-region=\($region) --log-opt awslogs-group=\($lg) \($img)",
               "docker image prune -af --filter until=72h || true"
             ]}')
 

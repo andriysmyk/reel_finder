@@ -74,6 +74,8 @@ terraform apply
 
 If the AWS account already has a GitHub OIDC provider, set `create_oidc_provider = false`.
 
+For repositories using immutable GitHub OIDC subjects, set `github_oidc_subject` to the exact subject, including owner and repository IDs (for example, `repo:OWNER@OWNER_ID/REPO@REPO_ID:environment:production`). The repository-specific value is included in `terraform.tfvars.example`. For other repositories, omit this variable to use `repo:OWNER/REPO:environment:production`. A failed `AssumeRoleWithWebIdentity` event in CloudTrail records the subject in `userIdentity.userName`.
+
 ### 2. Configure GitHub
 
 In the repository, go to **Settings → Environments**, create a `production` environment, and add the following **Variables** using the values from `terraform output`:

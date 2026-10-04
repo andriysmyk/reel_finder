@@ -158,7 +158,7 @@ resource "aws_iam_role" "github_deploy" {
         StringEquals = {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           # Only this repository's "production" environment can assume the role
-          "token.actions.githubusercontent.com:sub" = "repo:${var.github_repo}:environment:production"
+          "token.actions.githubusercontent.com:sub" = coalesce(var.github_oidc_subject, "repo:${var.github_repo}:environment:production")
         }
       }
     }]

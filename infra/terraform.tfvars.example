@@ -1,0 +1,4 @@
+github_repo = "andriysmyk/reel_finder"
+# Match the exact subject reported in CloudTrail for this repository.
+github_oidc_subject = "repo:andriysmyk@156137404/reel_finder@1404843055:environment:production"
+# create_oidc_provider = false  # if a GitHub OIDC provider already exists in the account
