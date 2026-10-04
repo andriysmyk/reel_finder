@@ -1,0 +1,169 @@
+:root {
+  --hall: #1b2236;     /* background: cinema auditorium */
+  --seat: #2a3352;     /* ticket cards */
+  --bulb: #f5c451;     /* accent: marquee lights */
+  --screen: #eef1f7;   /* primary text */
+  --usher: #a3aecb;    /* secondary text */
+  --alert: #ff9584;    /* errors */
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--hall);
+  color: var(--screen);
+  font: 400 1rem/1.55 var(--body);
+}
+
+.page {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--bulb); outline-offset: 3px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Illuminated marquee: the main visual accent on the page */
+.marquee {
+  position: relative;
+  padding: 1.75rem 2rem;
+  border-radius: 6px;
+  background: var(--seat);
+  text-align: center;
+}
+.marquee::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 3px;
+  padding: 6px;
+  background: radial-gradient(circle, var(--bulb) 2.5px, transparent 3.5px) 0 0 / 18px 18px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: lights-on 900ms steps(6) both;
+}
+@keyframes lights-on { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .marquee::before { animation: none; } }
+
+.marquee__title {
+  margin: 0;
+  font: 800 clamp(2.75rem, 9vw, 4.75rem)/0.95 var(--display);
+  letter-spacing: 0.01em;
+  color: var(--bulb);
+}
+.marquee__subtitle { margin: 0.5rem 0 0; color: var(--usher); }
+
+.search {
+  display: flex;
+  gap: 0.75rem;
+  margin: 2rem 0 1.5rem;
+}
+.search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--seat);
+  border-radius: 6px;
+  background: #141a2b;
+  color: var(--screen);
+  font: inherit;
+}
+.search__input::placeholder { color: var(--usher); }
+.search__input:focus { border-color: var(--bulb); outline: none; }
+.search__button {
+  padding: 0 1.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--bulb);
+  color: var(--hall);
+  font: 600 1rem var(--body);
+  cursor: pointer;
+}
+
+.status { color: var(--usher); }
+.status--error { color: var(--alert); }
+.status__code {
+  margin-left: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* Results styled as perforated tickets */
+.tickets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ticket {
+  --notch: radial-gradient(circle at 6.5rem 0, transparent 9px, #000 10px) top / 100% 51% no-repeat,
+           radial-gradient(circle at 6.5rem 100%, transparent 9px, #000 10px) bottom / 100% 51% no-repeat;
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  min-height: 9rem;
+  border-radius: 6px;
+  background: var(--seat);
+  text-decoration: none;
+  -webkit-mask: var(--notch);
+  mask: var(--notch);
+}
+.ticket:hover .ticket__title { color: var(--bulb); }
+.ticket__poster {
+  display: grid;
+  place-items: center;
+  border-right: 2px dashed var(--hall);
+  color: var(--usher);
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+.ticket__poster img { width: 100%; height: 100%; object-fit: cover; }
+.ticket__body { padding: 1rem 1.25rem; }
+.ticket__title {
+  margin: 0 0 0.35rem;
+  font: 600 1.6rem/1.05 var(--display);
+}
+.ticket__meta, .ticket__genres { margin: 0; color: var(--usher); font-size: 0.92rem; }
+
+.back {
+  display: inline-block;
+  margin: 1.75rem 0 1.25rem;
+  color: var(--usher);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.details__poster { width: 100%; border-radius: 6px; }
+.details__title { margin: 0 0 1rem; font: 800 clamp(2rem, 6vw, 3rem)/1 var(--display); }
+.details__facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.3rem 1.25rem;
+  margin: 0 0 1.25rem;
+}
+.details__facts dt { color: var(--usher); }
+.details__facts dd { margin: 0; }
+.details__summary { max-width: 62ch; }
+.details__link { color: var(--bulb); }
+
+@media (max-width: 40rem) {
+  .details { grid-template-columns: 1fr; }
+  .details__poster { max-width: 14rem; }
+}
