@@ -13,9 +13,13 @@ type State =
 
 export default function ShowPage() {
   const { id } = useParams<{ id: string }>();
+  const [backHref, setBackHref] = useState("/");
   const [state, setState] = useState<State>({ kind: "loading" });
 
   useEffect(() => {
+    const query = new URLSearchParams(window.location.search).get("q");
+    setBackHref(query ? `/?q=${encodeURIComponent(query)}` : "/");
+    setState({ kind: "loading" });
     const controller = new AbortController();
     fetch(`/api/shows/${id}`, { signal: controller.signal })
       .then(async (res) => {
@@ -36,7 +40,7 @@ export default function ShowPage() {
   return (
     <>
       <Marquee subtitle="Show details" />
-      <Link href="/" className="back" onClick={(e) => { if (history.length > 1) { e.preventDefault(); history.back(); } }}>
+      <Link href={backHref} className="back">
         Back to results
       </Link>
 
@@ -49,9 +53,9 @@ export default function ShowPage() {
       )}
       {state.kind === "done" && (
         <article className="details">
-          {state.show.imageUrl && <img className="details__poster" src={state.show.imageUrl} alt={`Poster for ${state.show.name}`} />}
+          {state.show.imageUrl ? <img className="details__poster" src={state.show.imageUrl} alt={`Poster for ${state.show.name}`} /> : <div className="details__poster details__placeholder">Poster unavailable</div>}
           <div>
-            <h2 className="details__title">{state.show.name}</h2>
+            <h1 className="details__title">{state.show.name}</h1>
             <dl className="details__facts">
               <dt>Premiered</dt><dd>{state.show.year ?? "Unknown"}</dd>
               <dt>Status</dt><dd>{state.show.status}</dd>
